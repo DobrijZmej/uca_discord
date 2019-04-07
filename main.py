@@ -60,6 +60,21 @@ async def on_message(message):
         if message.author.id != client.user.id:
             await client.send_message(message.channel, message.author.mention+", героям слава!")
 
+@client.event
+async def on_member_join(member):
+    if(member.server.name != 'Elite Dangerous Україна'):
+        return
+    nick = member.nick
+    if nick:
+        nick = " ("+nick+")"
+    else:
+        nick = ''
+    print(str(member.server.name))
+    # await client.send_message(get_channel_object('bots'), "@"+str(member) + nick +", ласкаво просимо до серверу української спільноти гри Elite Dangerous!\r\nЯ можу тобі дещо підказати, якщо ти напишеш `!допомога`")
+    await client.send_message(get_channel_object('bots'), member.mention + nick +", ласкаво просимо до серверу української спільноти гри Elite Dangerous!\r\nЯ можу тобі дещо підказати, якщо ти напишеш `!допомога`")
+    await client.send_message(get_channel_object('general'), member.mention + nick +", слава Україні!")
+
+
 """ ================== сохранить имя командира ============================="""
 async def on_safe_cmdr_name(message):
     """in_server, in_cmdr_mention, in_cmdr_name"""
