@@ -56,6 +56,10 @@ async def on_message(message):
     if message.content.startswith(prefix+"я "):
         await on_safe_cmdr_name(message)
 
+    if "слава україні" in message.content.lower() or "слава украине" in message.content.lower():
+        if message.author.id != client.user.id:
+            await client.send_message(message.channel, message.author.mention+", героям слава!")
+
 """ ================== сохранить имя командира ============================="""
 async def on_safe_cmdr_name(message):
     """in_server, in_cmdr_mention, in_cmdr_name"""
