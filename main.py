@@ -53,6 +53,9 @@ async def on_message(message):
 
     prefix = '!'
 
+    if client.user.mentioned_in(message):
+        await on_mention_me(message)
+
     if message.content.startswith(prefix+"я "):
         await on_safe_cmdr_name(message)
 
@@ -101,6 +104,27 @@ async def on_safe_cmdr_name(message):
     if(discords_count!=0):
         user_uuid = mysql_data.get_uid_by_pilot(new_name)
         await client.send_message(message.author, "Доречі, я все щє очікую, коли ти зарєструешся у своєму кабінеті на нашому сайті: "+site_url+user_uuid)
+
+""" ================== обращение к роботу ============================="""
+async def on_mention_me(message):
+    print(message.server.name)
+    print(message.content)
+    print(message.channel.id, message.channel.name)
+    if(str(message.server.id) != '276054497716076546'):
+        return 0
+    args = message.content.split()
+    if(args[1] == 'help'):
+        await on_help_en(message)
+        return
+
+    with open('adages.json', 'r') as f_adages:
+        j_adages = json.loads(f_adages.read())
+    #print(len(j_adages['adages']))
+    adage_index = random.randint(0, len(j_adages['adages'])-1)
+    prefix = ["як казав мій батько,", "древні казали:", "колись в космічному просторі почув, що", "у Києві кажуть, що", "чи знаєте ви, що"]
+    prefix_index = random.randint(0, len(prefix)-1)
+    #print(prefix_index)
+    await client.send_message(message.channel, message.author.mention+", "+prefix[prefix_index]+' "'+j_adages['adages'][adage_index]+'"')
 
 
 client.run('MjkyNzA1OTA2NzIwNzY4MDAx.DkhoUw.FaFJQmelVNJze-uVwkLt12RQh6U')
